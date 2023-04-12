@@ -42,6 +42,13 @@ from decompyle3.parsers.p38.heads import (
     Python38ParserLambda,
     Python38ParserSingle,
 )
+from decompyle3.parsers.p39.heads import (
+    Python39ParserEval,
+    Python39ParserExec,
+    Python39ParserExpr,
+    Python39ParserLambda,
+    Python39ParserSingle,
+)
 from decompyle3.parsers.treenode import SyntaxTree
 from decompyle3.show import maybe_show_asm
 
@@ -110,7 +117,21 @@ def get_python_parser(
             p = Python38ParserExpr(debug_parser=debug_parser)
         else:
             p = Python38ParserSingle(debug_parser)
-    elif version > (3, 8):
+    elif version == (3, 9):
+        if compile_mode == "exec":
+            p = Python39ParserExec(debug_parser=debug_parser)
+        elif compile_mode == "single":
+            p = Python39ParserSingle(debug_parser=debug_parser)
+        elif compile_mode == "lambda":
+            p = Python39ParserLambda(debug_parser=debug_parser)
+        elif compile_mode == "eval":
+            p = Python39ParserEval(debug_parser=debug_parser)
+        elif compile_mode == "expr":
+            p = Python39ParserExpr(debug_parser=debug_parser)
+        else:
+            p = Python39ParserSingle(debug_parser)
+
+    elif version > (3, 9):
         raise RuntimeError(
             f"""Version {version_tuple_to_str(version)} is not supported."""
         )
